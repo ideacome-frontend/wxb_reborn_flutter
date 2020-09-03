@@ -15,10 +15,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String url = "";
   double progress = 0;
-
+  final flutterWebviewPlugin = new FlutterWebviewPlugin();
   @override
   void initState() {
     super.initState();
+    Future.delayed(Duration(seconds: 5), () {});
   }
 
   @override
