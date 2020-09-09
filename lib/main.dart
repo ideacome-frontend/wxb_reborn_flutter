@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wxb/home.dart';
 import 'package:wxb/utils/screen_util.dart';
+import 'package:wxb/routes/routes.dart' as Routes;
 
 void main() {
   // 设置设备方向只允许垂直方向
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,
         title: '喂小保',
         theme: ThemeData(

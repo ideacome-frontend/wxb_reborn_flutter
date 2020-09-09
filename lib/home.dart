@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wxb/config/env.dart';
+import 'package:wxb/utils/js_channels.dart';
 import 'package:wxb/utils/screen_util.dart';
 
 class HomePage extends StatefulWidget {
@@ -19,7 +20,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {});
+    flutterWebviewPlugin.onStateChanged.listen((viewState) async {
+      if (viewState.type == WebViewState.finishLoad) {
+        flutterWebviewPlugin.evalJavascript('Print.postMessage(document.title)');
+      }
+    });
+    // Future.delayed(Duration(seconds: 5), () {
+    //   pushNamedAutoWebview(this.context, '/test');
+    // });
   }
 
   @override
@@ -37,6 +45,8 @@ class _HomePageState extends State<HomePage> {
           child: WebviewScaffold(
             enableAppScheme: false,
             ignoreSSLErrors: true,
+            javascriptChannels: FlutterToJsMethod.jsChannels,
+            withJavascript: true,
             url: EnvConfig.originUrl,
             appBar: PreferredSize(
                 child: DecoratedBox(
