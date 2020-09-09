@@ -18,7 +18,7 @@ samples, guidance on mobile development, and a full API reference.
 ## 项目打包
 
 ```shell
-flutter build apk --target-platform android-arm,android-arm64 --split-per-abi
+flutter build apk --target-platform android-arm,android-arm64 --build-number xxx --build-name x.xx
 # --split-per-abi 代表分包，可不加
 # 优化体积可只选择android-arm或arm64,arm兼容arm64的手机
 ```

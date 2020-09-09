@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:wxb/store/app_bar.dart';
 
 final flutterWebviewPlugin = new FlutterWebviewPlugin();
 
@@ -9,6 +10,7 @@ class FlutterToJsMethod {
     "openNewWebView": (params) {
       String url = params["url"];
       flutterWebviewPlugin.launch(url);
+      $appBarStore.setAppBar(show: true);
     }
   });
   static final Set<JavascriptChannel> jsChannels = [
