@@ -10,7 +10,7 @@ class FlutterToJsMethod {
     "openNewWebView": (params) {
       String url = params["url"];
       flutterWebviewPlugin.launch(url);
-      $appBarStore.setAppBar(show: true);
+      // $appBarStore.setAppBar(show: true);
     }
   });
   static final Set<JavascriptChannel> jsChannels = [

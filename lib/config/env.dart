@@ -8,7 +8,7 @@ Map mainUrl = {
   Environment.Test: 'https://test.wxb.com.cn/reborn/',
   Environment.Production: 'https://wxb.sczhbx.com/',
   Environment.Qa: 'http://qa.wxb.com.cn:8000/${EnvConfig.branchName}/reborn/',
-  Environment.Local: 'http://localhost:9090/',
+  Environment.Local: 'http://172.16.0.21:9090/',
 };
 
 class EnvConfig {
