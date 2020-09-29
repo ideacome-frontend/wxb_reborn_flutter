@@ -10,7 +10,8 @@ final routes = {
   '/': (context) => HomePage(),
   '/test': (context, {arguments}) => TestPage(),
   '/newwebview': (context, {arguments}) => WebviewExt(
-        url: arguments,
+        url: arguments['url'],
+        showNavBar: arguments['showNavBar'],
         key: UniqueKey(),
       ),
 };

@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wxb/component/back_buton.dart';
 import 'package:wxb/config/env.dart';
 import 'package:wxb/store/app_bar.dart';
-import 'package:wxb/utils/js_channels.dart';
+import 'package:wxb/utils/bridge/js_channels.dart';
 import 'package:wxb/utils/screen_util.dart';
 
 class HomePage extends StatefulWidget {
