@@ -26,7 +26,7 @@ class ScreenUtil {
     _ratio = _width / uiwidth;
   }
 
-  static px2dp(number) {
+  static adaptWidth(number) {
     return number * _ratio;
   }
 
@@ -52,6 +52,11 @@ class ScreenUtil {
 
   // 按照系统的字体缩放指定文字大小
   static double fontSizeScale(double num) {
-    return px2dp(num) / _textScaleFactor;
+    return adaptWidth(num) / _textScaleFactor;
+  }
+
+  // 根据传入的像素值，转换为flutter的单位，如44px
+  static px2dp(double num) {
+    return num / _pixelRatio;
   }
 }

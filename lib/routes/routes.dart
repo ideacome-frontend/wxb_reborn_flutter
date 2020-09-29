@@ -2,12 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wxb/home.dart';
 import 'package:wxb/pages/demo/test.dart';
+import 'package:wxb/webview_ext.dart';
 
 ///命名路由
 ///如果需要传参,请加上arguments可选参数
 final routes = {
   '/': (context) => HomePage(),
   '/test': (context, {arguments}) => TestPage(),
+  '/newwebview': (context, {arguments}) => WebviewExt(
+        url: arguments,
+        key: UniqueKey(),
+      ),
 };
 
 var onGenerateRoute = (RouteSettings settings) {

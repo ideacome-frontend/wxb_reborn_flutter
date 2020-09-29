@@ -19,20 +19,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String url = "";
   double progress = 0;
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
+  int loadCount = 0;
+  final _flutterWebviewPlugin = new FlutterWebviewPlugin();
+  final _flutterJsMethod = new FlutterToJsMethod();
   @override
   void initState() {
     super.initState();
-    flutterWebviewPlugin.onStateChanged.listen((viewState) async {
+    _flutterWebviewPlugin.onStateChanged.listen((viewState) async {
       if (viewState.type == WebViewState.finishLoad) {
-        flutterWebviewPlugin.evalJavascript('document.title').then((value) {
+        _flutterWebviewPlugin.evalJavascript('document.title').then((value) {
           $appBarStore.setAppBar(title: value);
         });
+        _flutterJsMethod.postHostInfo(_flutterWebviewPlugin);
       }
     });
-    // Future.delayed(Duration(seconds: 5), () {
-    //   pushNamedAutoWebview(this.context, '/test');
-    // });
   }
 
   @override
@@ -60,10 +60,10 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       centerTitle: true,
       leading: backButton(context, color: Colors.black87, backFun: () {
-        flutterWebviewPlugin.canGoBack().then((value) {
+        _flutterWebviewPlugin.canGoBack().then((value) {
           if (value) {
             $appBarStore.setAppBar(show: false);
-            flutterWebviewPlugin.goBack();
+            _flutterWebviewPlugin.goBack();
           }
         });
       }),
@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    loadCount++;
     return WillPopScope(
         child: AnnotatedRegion(
             value: SystemUiOverlayStyle.dark,
@@ -82,23 +83,25 @@ class _HomePageState extends State<HomePage> {
                 return WebviewScaffold(
                   enableAppScheme: false,
                   ignoreSSLErrors: true,
-                  javascriptChannels: FlutterToJsMethod.jsChannels,
+                  javascriptChannels: _flutterJsMethod.jsChannels,
                   withJavascript: true,
                   url: EnvConfig.originUrl,
                   appBar: renderAppBar(),
                   // withZoom: true,
                   withLocalStorage: true,
                   // hidden: true,
-                  // initialChild: Container(
-                  //   color: Colors.redAccent,
-                  //   child: const Center(
-                  //     child: Text('Waiting.....'),
-                  //   ),
-                  // ),
+                  initialChild: Container(
+                    color: Colors.white,
+                  ),
                 );
               },
             )),
         onWillPop: () async {
+          bool canGoBack = await _flutterWebviewPlugin.canGoBack();
+          if (canGoBack) {
+            _flutterWebviewPlugin.goBack();
+            return false;
+          }
           if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
             lastPopTime = DateTime.now();
             Fluttertoast.showToast(msg: '再按一次退出');

@@ -3,13 +3,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:wxb/common/Global.dart';
 import 'package:wxb/home.dart';
+import 'package:wxb/routes/navigaiton_service.dart';
 import 'package:wxb/utils/screen_util.dart';
 import 'package:wxb/routes/routes.dart' as Routes;
 
 void main() {
   // 设置设备方向只允许垂直方向
   WidgetsFlutterBinding.ensureInitialized();
+  Global.initHostInfo();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(MyApp());
   });
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: Routes.onGenerateRoute,
         debugShowCheckedModeBanner: false,
         title: '喂小保',
+        navigatorKey: NavigationService.navigatorKey,
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,

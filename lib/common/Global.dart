@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
+import 'package:wxb/common/host_info.dart';
 
 const _themes = <MaterialColor>[
   Colors.blue,
@@ -19,6 +24,24 @@ class Global {
 
   // 是否为release版
   static bool get isRelease => bool.fromEnvironment("dart.vm.product");
+
+  static HostInfo _hostInfo;
+
+  static HostInfo get hostInfo => _hostInfo;
+
+  static initHostInfo() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    if (Platform.isIOS) {
+      final isoInfo = await deviceInfo.iosInfo;
+      _hostInfo = new HostInfo(isoInfo.systemName, packageInfo.version, isoInfo.systemVersion);
+      print(_hostInfo.toJson());
+    }
+    if (Platform.isAndroid) {
+      final androidInfo = await deviceInfo.androidInfo;
+      _hostInfo = new HostInfo("Android", packageInfo.version, androidInfo.version.release);
+    }
+  }
 
   //初始化全局信息，会在APP启动时执行
   // static Future init() async {
@@ -44,4 +67,5 @@ class Global {
 
   // 持久化Profile信息
   // static saveProfile() => _prefs.setString("profile", jsonEncode(profile.toJson()));
+
 }
