@@ -20,7 +20,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool canGoback = false;
   int loadCount = 0;
   final webView = WebViewController(id: "main");
   // final _flutterWebviewPlugin = new FlutterWebviewPlugin();
@@ -78,34 +77,25 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       constraints: BoxConstraints.expand(),
                     ),
-                    onPageStart: (event) {
-                      print("sdfdsf");
-                      this.canGoback = event.canGoBack;
-                    },
-                    onPageEnd: (event) {
-                      print("sdfdsf");
-                      this.canGoback = event.canGoBack;
-                    },
                   ),
                 ),
               );
             })),
         onWillPop: () async {
-          webView.enableDebugging(value)
-          print(this.canGoback);
-          // if (this.canGoback) {
-          //   webView.back();
-          //   return false;
-          // }
-          // if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
-          //   lastPopTime = DateTime.now();
-          //   Fluttertoast.showToast(msg: '再按一次退出');
-          //   return false;
-          // } else {
-          //   lastPopTime = DateTime.now();
-          //   await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          //   return true;
-          // }
+          final canBack = await webView.canGoBack();
+          if (canBack) {
+            webView.back();
+            return false;
+          }
+          if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
+            lastPopTime = DateTime.now();
+            Fluttertoast.showToast(msg: '再按一次退出');
+            return false;
+          } else {
+            lastPopTime = DateTime.now();
+            await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            return true;
+          }
         });
   }
 }
