@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+// import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class NoAnimationPageRoute<T> extends MaterialPageRoute<T> {
   NoAnimationPageRoute({WidgetBuilder builder}) : super(builder: builder);
@@ -33,8 +33,8 @@ Future<T> pushWithCupertino<T extends Object>(Widget page, ctx) {
   );
 }
 
-Future<dynamic> pushNamedAutoWebview(BuildContext ctx, String name) {
-  final flutterWebviewPlugin = new FlutterWebviewPlugin();
-  flutterWebviewPlugin.hide();
-  return Navigator.of(ctx).pushNamed(name).then((value) => {flutterWebviewPlugin.show()});
-}
+// Future<dynamic> pushNamedAutoWebview(BuildContext ctx, String name) {
+//   final flutterWebviewPlugin = new FlutterWebviewPlugin();
+//   flutterWebviewPlugin.hide();
+//   return Navigator.of(ctx).pushNamed(name).then((value) => {flutterWebviewPlugin.show()});
+// }

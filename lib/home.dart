@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:overlay_webview/overlay_webview.dart';
 import 'package:wxb/component/back_buton.dart';
 import 'package:wxb/config/env.dart';
 import 'package:wxb/store/app_bar.dart';
-import 'package:wxb/utils/bridge/js_channels.dart';
+// import 'package:wxb/utils/bridge/js_channels.dart';
 import 'package:wxb/utils/screen_util.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,22 +20,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String url = "";
-  double progress = 0;
+  bool canGoback = false;
   int loadCount = 0;
-  final _flutterWebviewPlugin = new FlutterWebviewPlugin();
-  final _flutterJsMethod = new FlutterToJsMethod();
+  final webView = WebViewController(id: "main");
+  // final _flutterWebviewPlugin = new FlutterWebviewPlugin();
+  // final _flutterJsMethod = new FlutterToJsMethod();
   @override
   void initState() {
     super.initState();
-    _flutterWebviewPlugin.onStateChanged.listen((viewState) async {
-      if (viewState.type == WebViewState.finishLoad) {
-        _flutterWebviewPlugin.evalJavascript('document.title').then((value) {
-          $appBarStore.setAppBar(title: value);
-        });
-        _flutterJsMethod.postHostInfo(_flutterWebviewPlugin);
-      }
-    });
   }
 
   @override
@@ -59,14 +54,7 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Colors.white,
       centerTitle: true,
-      leading: backButton(context, color: Colors.black87, backFun: () {
-        _flutterWebviewPlugin.canGoBack().then((value) {
-          if (value) {
-            $appBarStore.setAppBar(show: false);
-            _flutterWebviewPlugin.goBack();
-          }
-        });
-      }),
+      leading: backButton(context, color: Colors.black87, backFun: () {}),
     );
   }
 
@@ -78,39 +66,46 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
         child: AnnotatedRegion(
             value: SystemUiOverlayStyle.dark,
-            child: Observer(
-              builder: (context) {
-                return WebviewScaffold(
-                  enableAppScheme: false,
-                  ignoreSSLErrors: true,
-                  javascriptChannels: _flutterJsMethod.jsChannels,
-                  withJavascript: true,
-                  url: EnvConfig.originUrl,
-                  appBar: renderAppBar(),
-                  // withZoom: true,
-                  withLocalStorage: true,
-                  // hidden: true,
-                  initialChild: Container(
-                    color: Colors.white,
+            child: Observer(builder: (context) {
+              return Scaffold(
+                appBar: renderAppBar(),
+                body: ConstrainedBox(
+                  constraints: BoxConstraints.expand(),
+                  child: WebView(
+                    controller: webView,
+                    url: EnvConfig.originUrl,
+                    background: Container(
+                      color: Colors.white,
+                      constraints: BoxConstraints.expand(),
+                    ),
+                    onPageStart: (event) {
+                      print("sdfdsf");
+                      this.canGoback = event.canGoBack;
+                    },
+                    onPageEnd: (event) {
+                      print("sdfdsf");
+                      this.canGoback = event.canGoBack;
+                    },
                   ),
-                );
-              },
-            )),
+                ),
+              );
+            })),
         onWillPop: () async {
-          bool canGoBack = await _flutterWebviewPlugin.canGoBack();
-          if (canGoBack) {
-            _flutterWebviewPlugin.goBack();
-            return false;
-          }
-          if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
-            lastPopTime = DateTime.now();
-            Fluttertoast.showToast(msg: '再按一次退出');
-            return false;
-          } else {
-            lastPopTime = DateTime.now();
-            await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-            return true;
-          }
+          webView.enableDebugging(value)
+          print(this.canGoback);
+          // if (this.canGoback) {
+          //   webView.back();
+          //   return false;
+          // }
+          // if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
+          //   lastPopTime = DateTime.now();
+          //   Fluttertoast.showToast(msg: '再按一次退出');
+          //   return false;
+          // } else {
+          //   lastPopTime = DateTime.now();
+          //   await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+          //   return true;
+          // }
         });
   }
 }
