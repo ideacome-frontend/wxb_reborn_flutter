@@ -18,7 +18,7 @@ class FlutterToJsMethod {
     this._webController = controller;
     this.jsChannels = [
       JavascriptChannel(
-          name: 'WxbCmd',
+          name: 'WebViewBridge',
           onMessageReceived: (JavascriptMessage message) {
             try {
               Map obj = jsonDecode(message.message);
@@ -42,7 +42,7 @@ class FlutterToJsMethod {
 
     this.extJsChannels = [
       ExtWebview.JavascriptChannel(
-        name: 'WxbCmd',
+        name: 'WebViewBridge',
         onMessageReceived: (ExtWebview.JavascriptMessage message) {
           try {
             Map obj = jsonDecode(message.message);
