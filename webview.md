@@ -14,10 +14,18 @@
 - 只能覆盖 flutter 视图，flutter 无法翟盖它
 - 最为流畅
 
-
 ## flutterinappwebview
 
 - 可以自由嵌入flutter 视图
 - 有浏览器模式
 - 有后台运行模式
 - 流畅性能最差，也存在部分键盘bug
+
+## overlay_webview
+
+- 实现方式类似flutter_webview_plugin
+- 原生界面性能流畅
+- 只能覆盖 flutter 视图
+- 没有实现页面切换动画
+
+-fork后地址： <https://github.com/yanqiqi1996/overlay_webview>
