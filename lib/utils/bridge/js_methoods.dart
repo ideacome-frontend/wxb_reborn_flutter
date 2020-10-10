@@ -3,6 +3,8 @@ import 'package:wxb/WebPage.dart';
 import 'package:wxb/common/Global.dart';
 import 'package:wxb/routes/navigaiton_service.dart';
 import 'package:wxb/routes/router_navigation.dart';
+import 'package:wxb/store/app_bar.dart';
+import 'package:app_settings/app_settings.dart';
 
 typedef CallMethods = Future<String> Function(dynamic params);
 final jsMethods = Map<String, CallMethods>.from({
@@ -15,13 +17,17 @@ final jsMethods = Map<String, CallMethods>.from({
       showNavBar: !navBarHidden,
       key: UniqueKey(),
     ));
-    // NavigationService.navigatorKey.currentState.pushNamed('/web', arguments: {
-    //   "url": url,
-    //   "showNavBar": !navBarHidden,
-    // }).then((value) {
-    //   try {
-    //     Global.webPages[Global.webPages.length - 2].show();
-    //   } catch (e) {}
-    // });
+  },
+  "setNavBarVisibility": (params) async {
+    bool hidden = params['hidden'] ?? true;
+    $appBarStore.setAppBar(show: !hidden);
+  },
+  "closeWebView": (params) async {
+    if (Global.webPages.length > 1) {
+      NavigationService.goBack();
+    }
+  },
+  "gotoAppSettings": (params) async {
+    AppSettings.openAppSettings();
   },
 });
