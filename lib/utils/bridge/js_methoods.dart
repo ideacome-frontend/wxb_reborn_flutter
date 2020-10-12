@@ -1,4 +1,11 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:wxb/WebPage.dart';
 import 'package:wxb/common/Global.dart';
 import 'package:wxb/routes/navigaiton_service.dart';
@@ -30,4 +37,21 @@ final jsMethods = Map<String, CallMethods>.from({
   "gotoAppSettings": (params) async {
     AppSettings.openAppSettings();
   },
+  "saveImage": (params) async {
+    String url = params["url"];
+    if (Platform.isAndroid) {
+      if (!await Permission.storage.request().isGranted) {
+        return;
+      }
+    }
+    Uint8List imageBytes;
+    if (url.contains('http')) {
+      var response = await new Dio().get(url, options: Options(responseType: ResponseType.bytes));
+      imageBytes = Uint8List.fromList(response.data);
+    } else {
+      // base64 转字节
+      imageBytes = base64Decode(url.split(',')[1]);
+    }
+    final result = await ImageGallerySaver.saveImage(imageBytes, name: "wxb_img_" + new DateTime.now().toString());
+  }
 });

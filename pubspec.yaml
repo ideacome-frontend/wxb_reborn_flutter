@@ -41,6 +41,10 @@ dependencies:
   package_info: "^0.4.3"
   mobx: ^1.2.1+2
   flutter_mobx: ^1.1.0+2
+  dio: ^3.0.10
+  permission_handler: ^5.0.1+1
+  image_gallery_saver: ^1.6.0
+
 
 # build_runner 相关issue
 # https://github.com/flutter/flutter/issues/62240#issuecomment-668997665

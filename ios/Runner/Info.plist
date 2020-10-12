@@ -47,5 +47,7 @@
 	</dict>
 	<key>io.flutter.embedded_views_preview</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>我们需要保存图片到相册</string>
 </dict>
 </plist>
