@@ -52,6 +52,6 @@ final jsMethods = Map<String, CallMethods>.from({
       // base64 转字节
       imageBytes = base64Decode(url.split(',')[1]);
     }
-    final result = await ImageGallerySaver.saveImage(imageBytes, name: "wxb_img_" + new DateTime.now().toString());
+    await ImageGallerySaver.saveImage(imageBytes, name: "wxb_img_" + new DateTime.now().toString());
   }
 });
