@@ -43,7 +43,7 @@ dependencies:
   flutter_mobx: ^1.1.0+2
   dio: ^3.0.10
   permission_handler: ^5.0.1+1
-  image_gallery_saver: ^1.6.0
+  image_gallery_saver: 1.5.0
 
 
 # build_runner 相关issue

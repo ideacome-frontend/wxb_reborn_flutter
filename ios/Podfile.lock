@@ -6,9 +6,13 @@ PODS:
   - Flutter (1.0.0)
   - fluttertoast (0.0.2):
     - Flutter
+  - image_gallery_saver (1.5.0):
+    - Flutter
   - overlay_webview (0.0.1):
     - Flutter
   - package_info (0.0.1):
+    - Flutter
+  - "permission_handler (5.0.1+1)":
     - Flutter
 
 DEPENDENCIES:
@@ -16,8 +20,10 @@ DEPENDENCIES:
   - device_info (from `.symlinks/plugins/device_info/ios`)
   - Flutter (from `Flutter`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
+  - image_gallery_saver (from `.symlinks/plugins/image_gallery_saver/ios`)
   - overlay_webview (from `.symlinks/plugins/overlay_webview/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
 
 EXTERNAL SOURCES:
   app_settings:
@@ -28,18 +34,24 @@ EXTERNAL SOURCES:
     :path: Flutter
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
+  image_gallery_saver:
+    :path: ".symlinks/plugins/image_gallery_saver/ios"
   overlay_webview:
     :path: ".symlinks/plugins/overlay_webview/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
 
 SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
   device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
+  image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
   overlay_webview: 3a61fe2ea69cdc0422c3c077232a439331121556
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

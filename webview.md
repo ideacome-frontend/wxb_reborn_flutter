@@ -3,6 +3,7 @@
 - 功能齐全
 - 路由拦截等
 - ios支持手势返回
+- 可自由与flutter界面组合，完全由flutter控制
 - **缺点** ： 仍然处于预览版 聚焦键盘弹出的重大问题 在部分机型仍现、 第一次加载webview有时会出现闪屏 流畅性不如plugin
 
 ## flutter_webview_plugin 社区组件
@@ -27,5 +28,6 @@
 - 原生界面性能流畅
 - 只能覆盖 flutter 视图
 - 没有实现页面切换动画
+- 可以存在多个webview 实例
 
 -fork后地址： <https://github.com/yanqiqi1996/overlay_webview>

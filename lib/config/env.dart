@@ -12,8 +12,8 @@ Map mainUrl = {
 };
 
 class EnvConfig {
-  static String branchName = "v8"; // qa环境分支，仅Qa枚举Qa有效
-  static Environment env = Environment.Local; // 当前环境
+  static String branchName = "v3"; // qa环境分支，仅Qa枚举Qa有效
+  static Environment env = Environment.Qa; // 当前环境
   static String get originUrl {
     return mainUrl[env];
   }
