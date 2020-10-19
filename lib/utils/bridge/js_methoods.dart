@@ -1,58 +1,57 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:wxb/WebPage.dart';
+import 'package:wxb/common/Global.dart';
 import 'package:wxb/routes/navigaiton_service.dart';
 import 'package:wxb/routes/router_navigation.dart';
-import 'package:wxb/webview_ext.dart';
-import 'dart:io';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:wxb/store/app_bar.dart';
+import 'package:app_settings/app_settings.dart';
 
 typedef CallMethods = Future<String> Function(dynamic params);
-final flutterWebviewPlugin = new FlutterWebviewPlugin();
 final jsMethods = Map<String, CallMethods>.from({
   "openNewWebView": (params) async {
     String url = params["url"];
     bool navBarHidden = params['navBarHidden'] ?? false;
-    if (Platform.isAndroid) {
-      pushWithoutAnimation(
-        new WebviewExt(
-          url: url,
-          showNavBar: !navBarHidden,
-        ),
-        NavigationService.navigatorKey.currentState.context,
-      ).then((value) => flutterWebviewPlugin.show());
-      Future.delayed(Duration(milliseconds: 400), () {
-        flutterWebviewPlugin.hide();
-      });
-    } else {
-      flutterWebviewPlugin.hide();
-      NavigationService.navigatorKey.currentState.pushNamed('/newwebview', arguments: {
-        "url": url,
-        "showNavBar": !navBarHidden,
-      }).then((value) {
-        flutterWebviewPlugin.show();
-      });
+    Global.webPages.last.hide();
+    pushNamedAutoWebview(new WebPage(
+      url: url,
+      showNavBar: !navBarHidden,
+      key: UniqueKey(),
+    ));
+  },
+  "setNavBarVisibility": (params) async {
+    bool hidden = params['hidden'] ?? true;
+    $appBarStore.setAppBar(show: !hidden);
+  },
+  "closeWebView": (params) async {
+    if (Global.webPages.length > 1) {
+      NavigationService.goBack();
     }
   },
-  "openNewWebView_extWebview": (params) async {
-    print("新打开的webview执行了jsbridge");
+  "gotoAppSettings": (params) async {
+    AppSettings.openAppSettings();
+  },
+  "saveImage": (params) async {
     String url = params["url"];
-    bool navBarHidden = params['navBarHidden'] ?? false;
     if (Platform.isAndroid) {
-      pushWithoutAnimation(
-        new WebviewExt(
-          url: url,
-          showNavBar: !navBarHidden,
-          key: UniqueKey(),
-        ),
-        NavigationService.navigatorKey.currentState.context,
-      );
-    } else {
-      NavigationService.navigatorKey.currentState.pushNamed(
-        '/newwebview',
-        arguments: {
-          "url": url,
-          "showNavBar": !navBarHidden,
-        },
-      );
+      if (!await Permission.storage.request().isGranted) {
+        return;
+      }
     }
+    Uint8List imageBytes;
+    if (url.contains('http')) {
+      var response = await new Dio().get(url, options: Options(responseType: ResponseType.bytes));
+      imageBytes = Uint8List.fromList(response.data);
+    } else {
+      // base64 转字节
+      imageBytes = base64Decode(url.split(',')[1]);
+    }
+    await ImageGallerySaver.saveImage(imageBytes, name: "wxb_img_" + new DateTime.now().toString());
   }
 });

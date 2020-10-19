@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
+import 'package:overlay_webview/overlay_webview.dart';
 import 'package:package_info/package_info.dart';
 import 'package:wxb/common/host_info.dart';
 
@@ -28,6 +29,8 @@ class Global {
   static HostInfo _hostInfo;
 
   static HostInfo get hostInfo => _hostInfo;
+
+  static List<WebViewController> webPages = [];
 
   static initHostInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();

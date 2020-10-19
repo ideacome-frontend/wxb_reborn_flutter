@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wxb/common/Global.dart';
-import 'package:wxb/home.dart';
+import 'package:wxb/WebPage.dart';
 import 'package:wxb/routes/navigaiton_service.dart';
 import 'package:wxb/utils/screen_util.dart';
 import 'package:wxb/routes/routes.dart' as Routes;
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         ],
         home: Builder(builder: (ctx) {
           ScreenUtil.init(750, ctx);
-          return HomePage();
+          return WebPage();
         }));
   }
 }
